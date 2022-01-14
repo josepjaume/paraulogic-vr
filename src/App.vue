@@ -6,38 +6,42 @@
     resize="window"
     :xr="true"
   >
-    <Camera :position="{ x: 0, y: 1.5, z: 1 }" ref="cameraC" />
     <Scene background="#ffffff" ref="sceneC">
-      <PointLight :position="{ x: 0, y: 0.5, z: -1 }" :intensity="1.5" />
-      <PointLight :position="{ x: 0, y: 2, z: 1 }" :intensity="1.5" />
-      <Cylinder :position="{ x: 0, y: 1.3, z: -0.4 }" />
-      <GltfModel
-        src="../models/paraulogic.gltf"
-        :position="{ x: 0, y: 1.3, z: -0.4 }"
-        :rotation="{ x: -0.5 }"
-        ref="paraulogicC"
-        cast-shadow
-      />
+      <Logo />
+      <Camera :position="{ x: 0, y: 1.5, z: 1 }" ref="cameraC" />
+      <PointLight :position="{ x: 0, y: 2, z: 1 }" :intensity="0.5" />
+      <AmbientLight :position="{ x: 0, y: 2, z: 0 }" :intensity="0.8" />
+
+      <Group :position="{ x: 0, y: 1.3, z: -0.4 }" :rotation="{ x: Math.PI / 3 }">
+        <Tile :position="{ x: 0, y: 0, z: 0 }" letter="N" color="RED" />
+        <Tile :position="{ x: 0.2, y: 0, z: 0 }" letter="R" />
+        <Tile :position="{ x: 0.099, y: 0, z: 0.175 }" letter="T" />
+        <Tile :position="{ x: -0.099, y: 0, z: 0.175 }" letter="A" />
+        <Tile :position="{ x: -0.2, y: 0, z: 0 }" letter="L" />
+        <Tile :position="{ x: -0.099, y: 0, z: -0.175 }" letter="P" />
+        <Tile :position="{ x: 0.099, y: 0, z: -0.175 }" letter="O" />
+      </Group>
     </Scene>
     <VRButton ref="vrbuttonC" />
   </Renderer>
 </template>
 
 <script setup lang="ts">
-import { RepeatWrapping, GridHelper } from 'three';
+import { GridHelper } from 'three';
 import { ref, onMounted } from 'vue'
-import { Box, Camera, LambertMaterial, MeshPublicInterface, PointLight, Renderer, RendererPublicInterface, Scene, GltfModel, Texture, StandardMaterial, Plane, Cylinder } from 'troisjs'
+import { AmbientLight, Camera, PointLight, Renderer, RendererPublicInterface, Scene, GltfModel, Group } from 'troisjs'
 import VRButton from 'troisjs/src/components/misc/VRButton.vue'
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import { Camera as CameraInterface, Vector3 } from 'three';
+import Tile from "./Tile.vue"
+import Logo from "./Logo.vue"
 
 const vrbuttonC = ref()
 const rendererC = ref<RendererPublicInterface>()
 const sceneC = ref()
 const paraulogicC = ref()
 const cameraC = ref()
-
-let target = new Vector3(0, 1.4, 0)
+let target = new Vector3(0, 1.3, -0.4)
 
 onMounted(() => {
   const renderer = rendererC.value!
